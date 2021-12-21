@@ -20,8 +20,9 @@ public class TopoVerifyController {
      * ping
      * @return
      */
-    @GetMapping("/ping/{id}}")
+    @GetMapping("/ping/{id}")
     public ResultWrapper topoPing(@PathVariable("id") String routeId, @RequestParam("ip") String pingRouteIp) {
+        System.out.println(pingRouteIp);
         String rs = RouterConnect.instance.sendCommand("ping " + pingRouteIp);
         System.out.println(rs);
         try {
@@ -37,7 +38,7 @@ public class TopoVerifyController {
      * test
      * @return
      */
-    @GetMapping("/test/{id}}")
+    @GetMapping("/test/{id}")
     @ResponseBody
     public ResultWrapper topoTest(@PathVariable("id") String routeId) {
         // Path path = Paths.get(String.format("src/main/resources/file/%s.json", routeId)); // 测试文件的名字可能要改一下

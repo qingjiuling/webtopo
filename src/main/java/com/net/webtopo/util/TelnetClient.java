@@ -146,7 +146,7 @@ public class TelnetClient {
 
     public static void main(String[] args) {
         TelnetClient telnet = new TelnetClient("VT220","#");        //Windows,用VT220,否则会乱码
-        if(telnet.login("172.16.0.3", 23, "CISCO")){
+        if(telnet.login("192.168.0.1", 23, "CISCO")){
             System.out.println(233);
             System.out.println("login");
             String rs = telnet.sendCommand("sh ip route");

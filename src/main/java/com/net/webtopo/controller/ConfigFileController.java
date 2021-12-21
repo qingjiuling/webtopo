@@ -1,6 +1,8 @@
 package com.net.webtopo.controller;
 
+import com.net.webtopo.util.JsonUtils;
 import com.net.webtopo.util.ResultWrapper;
+import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,21 +45,24 @@ public class ConfigFileController {
      */
     @GetMapping("/config/{id}")
     public ResultWrapper viewConfigFile(@PathVariable String id) {
-        Path path = Paths.get("src/main/resources/File/config_file.json");
-        byte[] data = new byte[0];
-        try {
-            data = Files.readAllBytes(path);
-        } catch (IOException e) {
-            return new ResultWrapper(500,"文件读取失败");
-        }
-        try {
-            String result = new String(data, "utf-8");
-            System.out.println(result);
-            return new ResultWrapper(result);
-        } catch (UnsupportedEncodingException e) {
-            return new ResultWrapper(500,"文件读取失败");
-        }
-
+//        Path path = Paths.get("src/main/resources/File/config_file.json");
+//        byte[] data = new byte[0];
+//        try {
+//            data = Files.readAllBytes(path);
+//        } catch (IOException e) {
+//            return new ResultWrapper(500,"文件读取失败");
+//        }
+//        try {
+//            String result = new String(data, "utf-8");
+//            System.out.println(result);
+//            return new ResultWrapper(result);
+//        } catch (UnsupportedEncodingException e) {
+//            return new ResultWrapper(500,"文件读取失败");
+//        }
+        // 把json转成String
+        String content = JsonUtils.readJsonFile("src/main/resources/File/config_file.json");
+        JSONObject jsonObject = JSONObject.fromObject(content);
+        return new ResultWrapper(jsonObject.get(id));
     }
 
     /**

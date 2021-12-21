@@ -1,5 +1,6 @@
 package com.net.webtopo.controller;
 
+import com.net.webtopo.pojo.AllInfo;
 import com.net.webtopo.util.ReadInfo;
 import com.net.webtopo.util.ResultWrapper;
 import com.net.webtopo.util.RouterConnect;
@@ -19,14 +20,15 @@ public class TopoViewController {
      */
     @GetMapping("/view")
     public ResultWrapper getAllInfo() {
-        return new ResultWrapper();
+        AllInfo ai = new AllInfo(rd.getRouter("router_01"), rd.getRouter("router_02"), rd.getRouter("router_03"), rd.getCable("cable_01"), rd.getCable("cable_02"));
+        return new ResultWrapper(ai);
     }
 
     /**
      * view router information
      * @return
      */
-    @GetMapping("/view/router/{id}}")
+    @GetMapping("/view/router/{id}")
     public ResultWrapper getRouter(@PathVariable("id") String routeId) {
         return new ResultWrapper(rd.getRouter(routeId));
     }
@@ -35,8 +37,8 @@ public class TopoViewController {
      * view cable information
      * @return
      */
-    @GetMapping("/view/cable/{id}}")
-    public ResultWrapper getCable(@PathVariable String cableId) {
-        return new ResultWrapper(rd.getCable(cableId));
+    @GetMapping("/view/cable/{id}")
+    public ResultWrapper getCable(@PathVariable String id) {
+        return new ResultWrapper(rd.getCable(id));
     }
 }

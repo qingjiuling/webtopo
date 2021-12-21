@@ -1,6 +1,8 @@
 package com.net.webtopo.controller;
 
+import com.net.webtopo.util.JsonUtils;
 import com.net.webtopo.util.ResultWrapper;
+import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,7 +49,9 @@ public class TestFileController {
         } catch (UnsupportedEncodingException e) {
             return new ResultWrapper(500,"文件读取失败");
         }
-
+//        String content = JsonUtils.readJsonFile("src/main/resources/File/test.json");
+//        JSONObject jsonObject = JSONObject.fromObject(content);
+//        return new ResultWrapper(jsonObject.get(id));
     }
 
     @PutMapping("/test/{id}")
