@@ -116,7 +116,7 @@ public class ReadInfo {
             if((leftInf != "null")&&(rightInf != "null")&&(leftSta.equals("1"))&&(rightSta.equals("1"))) {
                 cableSta = "1";
             }
-            cb =new Cable(Integer.valueOf(cableSta),rfl,rfr);
+            cb =new Cable(cableSta,rfl,rfr);
         }else if(leftRouter == "null" && rightRouter != "null") {
             rfl =new RouterIntf(err,err,err,err);
 
@@ -133,7 +133,7 @@ public class ReadInfo {
 
             rfr =new RouterIntf(ip,itf,mask,status);
 
-            cb =new Cable(Integer.valueOf(cableSta),rfl,rfr);
+            cb =new Cable(cableSta,rfl,rfr);
         }else if(rightRouter == "null" && leftRouter != "null") {
             rfr =new RouterIntf(err,err,err,err);
 
@@ -150,11 +150,11 @@ public class ReadInfo {
 
             rfl =new RouterIntf(ip,itf,mask,status);
 
-            cb =new Cable(Integer.valueOf(cableSta),rfl,rfr);
+            cb =new Cable(cableSta,rfl,rfr);
         }else {
             rfl =new RouterIntf(err,err,err,err);
             rfr =new RouterIntf(err,err,err,err);
-            cb =new Cable(Integer.valueOf(cableSta),rfl,rfr);
+            cb =new Cable(cableSta,rfl,rfr);
         }
         return cb;
     }

@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Cable {
 
-    private int status;
+    private String status;
     private RouterIntf left;
     private RouterIntf right;
 
-    public Cable(int status, RouterIntf left, RouterIntf right) {
+    public Cable(String status, RouterIntf left, RouterIntf right) {
         this.status = status;
         this.left = left;
         this.right = right;
