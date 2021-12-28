@@ -1,6 +1,7 @@
 package com.net.webtopo.util;
 
 import com.net.webtopo.pojo.Cable;
+import com.net.webtopo.pojo.Router;
 import com.net.webtopo.pojo.RouterIntf;
 
 import java.io.IOException;
@@ -17,7 +18,7 @@ import lombok.Data;
 @Data
 public class ReadInfo {
 
-    public List<RouterIntf> getRouter(String routerId) {
+    public Router getRouter(String routerId) {
 
         Path path = Paths.get("src/main/resources/file/configInfo.json");
         byte[] data = new byte[0];
@@ -35,8 +36,7 @@ public class ReadInfo {
         //System.out.println(result);
         JSONObject jsonObj;
         jsonObj = JSONObject.fromObject(object);
-        String[] inf ={"s0","s1","g0","g1","lo0","lo1","lo2","lo3","lo4","lo5"
-        };
+        String[] inf ={"s0","s1","g0","g1","lo0","lo1","lo2","lo3","lo4","lo5"};
         List<RouterIntf> list = new ArrayList<>();
         for(int i=0;i<10;i++) {
             String ip;
@@ -51,9 +51,9 @@ public class ReadInfo {
 
             RouterIntf rf =new RouterIntf(ip,itf,mask,status);
             list.add(rf);
-            //System.out.println(list);
         }
-        return list;
+        Router rt = new Router(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5), list.get(6), list.get(7), list.get(8), list.get(9));
+        return rt;
     }
 
     public Cable getCable(String cableId) {

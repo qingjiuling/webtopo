@@ -8,13 +8,13 @@ import java.util.List;
 @Data
 public class AllInfo {
 
-    private List<RouterIntf> router1;
-    private List<RouterIntf> router2;
-    private List<RouterIntf> router3;
+    private Router router1;
+    private Router router2;
+    private Router router3;
     private Cable cable1;
     private Cable cable2;
 
-    public AllInfo (List<RouterIntf> router1, List<RouterIntf> router2, List<RouterIntf> router3, Cable cable1, Cable cable2) {
+    public AllInfo (Router router1, Router router2, Router router3, Cable cable1, Cable cable2) {
         this.router1 = router1;
         this.router2 = router2;
         this.router3 = router3;
