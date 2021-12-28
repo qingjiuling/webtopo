@@ -56,15 +56,18 @@ public class TopoVerifyController {
                 String cmd = myCase.getString("input");
                 connectionController.establishConnection(routerId);
                 String rs = RouterConnect.instance.sendCommand(cmd); // 发送给路由器
-                try {
-                    rs = new String(rs.getBytes("ISO-8859-1"),"GBK");
-                    System.out.println(rs);
-                    TestResult ts = new TestResult(cmd,rs); // 把每一行指令的结果存入队列
-                    resultList.add(ts);
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                    return new ResultWrapper(500,cmd + " 指令发送失败");
-                }
+                System.out.println(rs);
+                TestResult ts = new TestResult(cmd,rs); // 把每一行指令的结果存入队列
+                resultList.add(ts);
+                //添加一个关闭连接
+                connectionController.distinctConnection();
+//                try {
+//                    rs = new String(rs.getBytes("ISO-8859-1"),"GBK");
+//
+//                } catch (UnsupportedEncodingException e) {
+//                    e.printStackTrace();
+//                    return new ResultWrapper(500,cmd + " 指令发送失败");
+//                }
             }
 
             return new ResultWrapper(resultList.toString()); // 返回输入输出列表的字符串
