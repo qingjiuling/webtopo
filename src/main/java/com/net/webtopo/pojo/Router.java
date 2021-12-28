@@ -1,5 +1,11 @@
 package com.net.webtopo.pojo;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+
 public class Router {
 
     private RouterIntf s0;
