@@ -25,12 +25,28 @@ import static org.apache.tomcat.jni.Time.sleep;
 public class ConfigController {
 
     public static void main(String[] args) {
-        System.out.println(portConvert("s0/0/0"));
+        // 读取配置文件
+        String content = JsonUtils.readJsonFile("src/main/resources/File/config_file.json");
+        JSONObject jsonObject = JSONObject.fromObject(content);
+        Object router = jsonObject.get("router_03");
+        JSONObject jsonRouter = JSONObject.fromObject(router);
+        String[] portList = jsonRouter.getString("port").split(",");
+        String rs = "";
+        // 配置端口，掩码成谜
+        for(int i=0;i< portList.length;i++){
+            String[] tempList = portList[i].split(":");
+            if((tempList[0].equals("lo0"))||(tempList[0].equals("lo1"))||(tempList[0].equals("lo2"))) ;
+            else tempList[0] = portConvert(tempList[0]);
+            System.out.println(tempList[0]);
+            System.out.println(tempList[1]);
+            statusChange("router_03", tempList[0],tempList[1],"255.255.255.0");
+        }
+
     }
     public static String portConvert(String s){
         if(s.equals("lo0"))return "loopback0";
-        else if(s.equals("l01")) return "loopback1";
-        else if(s.equals("l02")) return "loopback2";
+        else if(s.equals("lo1")) return "loopback1";
+        else if(s.equals("lo2")) return "loopback2";
         else if(s.equals("s0")) return "s0/0/0";
         else if(s.equals("s1")) return "s0/0/1";
         else if(s.equals("s0/0/0")) return "s0";
@@ -99,7 +115,7 @@ public class ConfigController {
         for(int i=0;i< portList.length;i++){
             String[] tempList = portList[i].split(":");
             //System.out.println(tempList[0] + "233");
-            if((tempList[0].equals("lo0"))||(tempList[0].equals("lo1"))||(tempList[0].equals("lo2"))) System.out.println(444);
+            if((tempList[0].equals("lo0"))||(tempList[0].equals("lo1"))||(tempList[0].equals("lo2"))) ;
             else tempList[0] = portConvert(tempList[0]);
             System.out.println(id);
             System.out.println(tempList[0]);
@@ -129,7 +145,7 @@ public class ConfigController {
 //        }
 
         // 执行show
-        rs = rs + RouterConnect.instance.sendCommand("show");
+        rs = rs + RouterConnect.instance.sendCommand("show ip route");
 
         // 执行showtest，不知道什么意思，明天问
         System.out.println(rs);
@@ -143,4 +159,5 @@ public class ConfigController {
         System.out.println(rs);
         return new ResultWrapper(rs);
     }
+
 }
