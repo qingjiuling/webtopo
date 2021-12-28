@@ -1,8 +1,11 @@
 package com.net.webtopo.pojo;
 
 
+import lombok.Data;
+
 import java.util.List;
 
+@Data
 public class AllInfo {
 
     private List<RouterIntf> router1;

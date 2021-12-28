@@ -50,7 +50,7 @@ public class ConfigController {
         JSONObject portJson = JSONObject.fromObject(myPort);
         portJson.put("ip", ip);
         portJson.put("mask", mask);
-        portJson.put("status", "activated");
+        portJson.put("status", "1");
 
         routerJson.put(port,portJson);
         jsonObject.put(id,routerJson);
@@ -75,13 +75,11 @@ public class ConfigController {
 
         String rs = "";
         rs = rs + RouterConnect.instance.sendCommand("configure terminal");
-        sleep(500);
+        System.out.println(interact.get("interface"));
+        System.out.println(233);
         rs = rs + RouterConnect.instance.sendCommand(String.format("interface %s", portConvert(interact.get("interface"))));
-        sleep(500);
         rs = rs + RouterConnect.instance.sendCommand(String.format("ip address %s %s", interact.get("ip"), interact.get("mask")));
-        sleep(500);
         rs = rs + RouterConnect.instance.sendCommand("no shutdown");
-        sleep(500);
         rs = rs + RouterConnect.instance.sendCommand("exit");
         rs = rs + RouterConnect.instance.sendCommand("exit");
         System.out.println(rs);
@@ -100,7 +98,7 @@ public class ConfigController {
         // 配置端口，掩码成谜
         for(int i=0;i< portList.length;i++){
             String[] tempList = portList[i].split(":");
-            System.out.println(tempList[0] + "233");
+            //System.out.println(tempList[0] + "233");
             if((tempList[0].equals("lo0"))||(tempList[0].equals("lo1"))||(tempList[0].equals("lo2"))) System.out.println(444);
             else tempList[0] = portConvert(tempList[0]);
             System.out.println(id);
@@ -124,7 +122,7 @@ public class ConfigController {
         rs = rs + RouterConnect.instance.sendCommand("exit");
         rs = rs + RouterConnect.instance.sendCommand("exit");
 
-        // 执行ping
+//        // 执行ping
 //        String[] pingList = jsonRouter.getString("ping").split(",");
 //        for (int i=0;i< pingList.length;i++){
 //            rs = rs + RouterConnect.instance.sendCommand(String.format("ping %s", pingList[i]));
@@ -140,7 +138,9 @@ public class ConfigController {
 
     @PutMapping("command")
     public ResultWrapper interactCommand(@RequestBody Map<String,String> interact){
+        System.out.println(233);
         String rs = RouterConnect.instance.sendCommand(interact.get("command"));
-        return new ResultWrapper(interact.get(rs));
+        System.out.println(rs);
+        return new ResultWrapper(rs);
     }
 }

@@ -1,12 +1,15 @@
 package com.net.webtopo.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.net.webtopo.util.JsonUtils;
 import com.net.webtopo.util.ResultWrapper;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.net.Proxy;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,7 +26,7 @@ public class ConfigFileController {
      * @return
      */
     @PostMapping("/config")
-    public ResultWrapper addConfigFile(@RequestParam("id") String id, @RequestBody MultipartFile file) {
+    public ResultWrapper addConfigFile(@RequestBody MultipartFile file) {
         try  {
             BufferedOutputStream out = new BufferedOutputStream(
                     new FileOutputStream("src/main/resources/File/config_file.json")
@@ -31,7 +34,7 @@ public class ConfigFileController {
             out.write(file.getBytes());
             out.flush();
             out.close();
-            return new ResultWrapper();
+            return new ResultWrapper("执行成功");
         } catch (FileNotFoundException e) {
             return new ResultWrapper(500, "失败");
         } catch (IOException e) {
@@ -43,8 +46,8 @@ public class ConfigFileController {
      * view config file
      * @return
      */
-    @GetMapping("/config/{id}")
-    public ResultWrapper viewConfigFile(@PathVariable String id) {
+    @GetMapping("/config")
+    public ResultWrapper viewConfigFile() {
 //        Path path = Paths.get("src/main/resources/File/config_file.json");
 //        byte[] data = new byte[0];
 //        try {
@@ -62,7 +65,11 @@ public class ConfigFileController {
         // 把json转成String
         String content = JsonUtils.readJsonFile("src/main/resources/File/config_file.json");
         JSONObject jsonObject = JSONObject.fromObject(content);
-        return new ResultWrapper(jsonObject.get(id));
+        JSONArray array = new JSONArray();
+        array.add(jsonObject);
+        String res = array.toString();
+        res = res.substring(1,res.length()-1);
+        return new ResultWrapper(res);
     }
 
     /**
@@ -70,8 +77,8 @@ public class ConfigFileController {
      * @param
      * @return
      */
-    @PutMapping("/config/{id}")
-    public ResultWrapper updateConfigFile(@RequestParam("context") String context, @PathVariable("id") String id) {
+    @PutMapping("/config")
+    public ResultWrapper updateConfigFile(@RequestParam("context") String context) {
         try {
             BufferedOutputStream out = new BufferedOutputStream(
                     new FileOutputStream(String.format("src/main/resources/File/config_file.json"))
@@ -79,7 +86,7 @@ public class ConfigFileController {
             out.write(context.getBytes(StandardCharsets.UTF_8));
             out.flush();
             out.close();
-            return new ResultWrapper();
+            return new ResultWrapper("执行成功");
         } catch (FileNotFoundException e) {
             return new ResultWrapper(500,"失败");
         } catch (IOException e) {

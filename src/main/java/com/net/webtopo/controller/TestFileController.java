@@ -17,7 +17,7 @@ import java.nio.file.Paths;
 public class TestFileController {
 
     @PostMapping("/test")
-    public ResultWrapper addTestFile(@RequestParam("id") String id, @RequestBody MultipartFile file) {
+    public ResultWrapper addTestFile(@RequestBody MultipartFile file) {
         try  {
             BufferedOutputStream out = new BufferedOutputStream(
                     new FileOutputStream("src/main/resources/File/test.json")
@@ -25,7 +25,7 @@ public class TestFileController {
             out.write(file.getBytes());
             out.flush();
             out.close();
-            return new ResultWrapper();
+            return new ResultWrapper("执行成功");
         } catch (FileNotFoundException e) {
             return new ResultWrapper(500, "失败");
         } catch (IOException e) {
@@ -33,8 +33,8 @@ public class TestFileController {
         }
     }
 
-    @GetMapping("/test/{id}")
-    public ResultWrapper viewTestFile(@PathVariable String id) {
+    @GetMapping("/test")
+    public ResultWrapper viewTestFile() {
         Path path = Paths.get("src/main/resources/File/test.json");
         byte[] data = new byte[0];
         try {
@@ -54,8 +54,8 @@ public class TestFileController {
 //        return new ResultWrapper(jsonObject.get(id));
     }
 
-    @PutMapping("/test/{id}")
-    public ResultWrapper updateTestFile(@RequestParam("context") String context, @PathVariable("id") String id) {
+    @PutMapping("/test")
+    public ResultWrapper updateTestFile(@RequestParam("context") String context) {
         try {
             BufferedOutputStream out = new BufferedOutputStream(
                     new FileOutputStream("src/main/resources/File/test.json")
@@ -63,7 +63,7 @@ public class TestFileController {
             out.write(context.getBytes(StandardCharsets.UTF_8));
             out.flush();
             out.close();
-            return new ResultWrapper();
+            return new ResultWrapper("执行成功");
         } catch (FileNotFoundException e) {
             return new ResultWrapper(500,"失败");
         } catch (IOException e) {

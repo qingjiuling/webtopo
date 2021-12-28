@@ -1,16 +1,17 @@
 package com.net.webtopo.controller;
 
 import com.net.webtopo.pojo.TestResult;
-import com.net.webtopo.util.ReadInfo;
+import com.net.webtopo.util.JsonUtils;
 import com.net.webtopo.util.ResultWrapper;
 import com.net.webtopo.util.RouterConnect;
+import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/check")
@@ -38,33 +39,43 @@ public class TopoVerifyController {
      * test
      * @return
      */
-    @GetMapping("/test/{id}")
+    @GetMapping("/test")
     @ResponseBody
-    public ResultWrapper topoTest(@PathVariable("id") String routeId) {
-        // Path path = Paths.get(String.format("src/main/resources/file/%s.json", routeId)); // 测试文件的名字可能要改一下
-        // File file = new File(String.valueOf(path));
-        File file = new File("src/main/resources/file/test.json");
+    public ResultWrapper topoTest() {
+        try{
+            List<TestResult> resultList = new LinkedList<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(file));) {
-            List<TestResult> list = new ArrayList<>();
-            String line;
-            while ((line = br.readLine()) != null) { // 按行读取文件
-                System.out.println(line); // 打印每一行指令
-                String rs = RouterConnect.instance.sendCommand(line); // 发送给路由器
+            String content = JsonUtils.readJsonFile("src/main/resources/file/test.json");
+            JSONObject jsonObject = JSONObject.fromObject(content);
+
+            ConnectionController connectionController = new ConnectionController();
+            for (Object key:jsonObject.keySet()
+            ) {
+                JSONObject myCase = (JSONObject) jsonObject.get(key);
+                String routerId = myCase.getString("router_id");
+                String cmd = myCase.getString("input");
+                connectionController.establishConnection(routerId);
+                String rs = RouterConnect.instance.sendCommand(cmd); // 发送给路由器
                 try {
                     rs = new String(rs.getBytes("ISO-8859-1"),"GBK");
                     System.out.println(rs);
-                    TestResult ts = new TestResult(line,rs); // 把每一行指令的结果存入队列
-                    list.add(ts);
+                    TestResult ts = new TestResult(cmd,rs); // 把每一行指令的结果存入队列
+                    resultList.add(ts);
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
-                    return new ResultWrapper(500,line + " 指令发送失败");
+                    return new ResultWrapper(500,cmd + " 指令发送失败");
                 }
             }
-            return new ResultWrapper(list); // 返回输入输出列表
-        } catch (IOException e) {
+
+            return new ResultWrapper(resultList.toString()); // 返回输入输出列表的字符串
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return new ResultWrapper(500,"测试文件获取失败");
+    }
+
+    public static void main(String[] args) {
+        TopoVerifyController topoVerifyController = new TopoVerifyController();
+        topoVerifyController.topoTest();
     }
 }

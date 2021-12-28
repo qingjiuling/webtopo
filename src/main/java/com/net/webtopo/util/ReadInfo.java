@@ -35,9 +35,10 @@ public class ReadInfo {
         //System.out.println(result);
         JSONObject jsonObj;
         jsonObj = JSONObject.fromObject(object);
-        String[] inf ={"s0","s1","g0","g1"};
+        String[] inf ={"s0","s1","g0","g1","lo0","lo1","lo2","lo3","lo4","lo5"
+        };
         List<RouterIntf> list = new ArrayList<>();
-        for(int i=0;i<4;i++) {
+        for(int i=0;i<10;i++) {
             String ip;
             String itf;
             String mask;
@@ -76,43 +77,85 @@ public class ReadInfo {
 
         //左右两边路由信息
         String leftRouter = String.valueOf(((JSONObject)((JSONObject)jsonObj.get(cableId)).get("left")).get("router"));
-        String leftInf = String.valueOf(((JSONObject)((JSONObject)jsonObj.get(cableId)).get("left")).get("interface"));
         String rightRouter = String.valueOf(((JSONObject)((JSONObject)jsonObj.get(cableId)).get("right")).get("router"));
+        String leftInf = String.valueOf(((JSONObject)((JSONObject)jsonObj.get(cableId)).get("left")).get("interface"));
         String rightInf = String.valueOf(((JSONObject)((JSONObject)jsonObj.get(cableId)).get("right")).get("interface"));
         String leftSta = null;
         String rightSta = null;
         String cableSta = "0";
+        String err = "未配置";
 
-        //左边路由
+        Cable cb;
 
-        String ip;
-        String itf;
-        String mask;
-        String status;
+        RouterIntf rfl, rfr;
 
-        ip= String.valueOf(((JSONObject)((JSONObject)jsonObj.get(leftRouter)).get(leftInf)).get("ip"));
-        itf= String.valueOf(((JSONObject)((JSONObject)jsonObj.get(leftRouter)).get(leftInf)).get("interface"));
-        mask= String.valueOf(((JSONObject)((JSONObject)jsonObj.get(leftRouter)).get(leftInf)).get("mask"));
-        status= String.valueOf(((JSONObject)((JSONObject)jsonObj.get(leftRouter)).get(leftInf)).get("status"));
-        leftSta =status;
+        if((leftRouter != "null") && (rightRouter != "null")) {
+            //左边路由
+            String ip;
+            String itf;
+            String mask;
+            String status;
 
-        RouterIntf rfl =new RouterIntf(ip,itf,mask,status);
+            ip= String.valueOf(((JSONObject)((JSONObject)jsonObj.get(leftRouter)).get(leftInf)).get("ip"));
+            itf= String.valueOf(((JSONObject)((JSONObject)jsonObj.get(leftRouter)).get(leftInf)).get("interface"));
+            mask= String.valueOf(((JSONObject)((JSONObject)jsonObj.get(leftRouter)).get(leftInf)).get("mask"));
+            status= String.valueOf(((JSONObject)((JSONObject)jsonObj.get(leftRouter)).get(leftInf)).get("status"));
+            leftSta =status;
 
-        //右边路由
+            rfl =new RouterIntf(ip,itf,mask,status);
 
-        ip= String.valueOf(((JSONObject)((JSONObject)jsonObj.get(rightRouter)).get(rightInf)).get("ip"));
-        itf= String.valueOf(((JSONObject)((JSONObject)jsonObj.get(rightRouter)).get(rightInf)).get("interface"));
-        mask= String.valueOf(((JSONObject)((JSONObject)jsonObj.get(rightRouter)).get(rightInf)).get("mask"));
-        status= String.valueOf(((JSONObject)((JSONObject)jsonObj.get(rightRouter)).get(rightInf)).get("status"));
-        rightSta =status;
+            //右边路由
+            ip= String.valueOf(((JSONObject)((JSONObject)jsonObj.get(rightRouter)).get(rightInf)).get("ip"));
+            itf= String.valueOf(((JSONObject)((JSONObject)jsonObj.get(rightRouter)).get(rightInf)).get("interface"));
+            mask= String.valueOf(((JSONObject)((JSONObject)jsonObj.get(rightRouter)).get(rightInf)).get("mask"));
+            status= String.valueOf(((JSONObject)((JSONObject)jsonObj.get(rightRouter)).get(rightInf)).get("status"));
+            rightSta =status;
 
-        RouterIntf rfr =new RouterIntf(ip,itf,mask,status);
+            rfr =new RouterIntf(ip,itf,mask,status);
 
-        if((leftRouter != null)&&(leftInf != null)&&(rightRouter != null)&&(rightInf != null)&&(leftSta == "1")&&(rightSta =="1")) {
-            cableSta = "1";
+            if((leftInf != "null")&&(rightInf != "null")&&(leftSta.equals("1"))&&(rightSta.equals("1"))) {
+                cableSta = "1";
+            }
+            cb =new Cable(Integer.valueOf(cableSta),rfl,rfr);
+        }else if(leftRouter == "null" && rightRouter != "null") {
+            rfl =new RouterIntf(err,err,err,err);
+
+            String ip;
+            String itf;
+            String mask;
+            String status;
+
+            //右边路由
+            ip= String.valueOf(((JSONObject)((JSONObject)jsonObj.get(rightRouter)).get(rightInf)).get("ip"));
+            itf= String.valueOf(((JSONObject)((JSONObject)jsonObj.get(rightRouter)).get(rightInf)).get("interface"));
+            mask= String.valueOf(((JSONObject)((JSONObject)jsonObj.get(rightRouter)).get(rightInf)).get("mask"));
+            status= String.valueOf(((JSONObject)((JSONObject)jsonObj.get(rightRouter)).get(rightInf)).get("status"));
+
+            rfr =new RouterIntf(ip,itf,mask,status);
+
+            cb =new Cable(Integer.valueOf(cableSta),rfl,rfr);
+        }else if(rightRouter == "null" && leftRouter != "null") {
+            rfr =new RouterIntf(err,err,err,err);
+
+            String ip;
+            String itf;
+            String mask;
+            String status;
+
+            //左边路由
+            ip= String.valueOf(((JSONObject)((JSONObject)jsonObj.get(leftRouter)).get(leftInf)).get("ip"));
+            itf= String.valueOf(((JSONObject)((JSONObject)jsonObj.get(leftRouter)).get(leftInf)).get("interface"));
+            mask= String.valueOf(((JSONObject)((JSONObject)jsonObj.get(leftRouter)).get(leftInf)).get("mask"));
+            status= String.valueOf(((JSONObject)((JSONObject)jsonObj.get(leftRouter)).get(leftInf)).get("status"));
+
+            rfl =new RouterIntf(ip,itf,mask,status);
+
+            cb =new Cable(Integer.valueOf(cableSta),rfl,rfr);
+        }else {
+            rfl =new RouterIntf(err,err,err,err);
+            rfr =new RouterIntf(err,err,err,err);
+            cb =new Cable(Integer.valueOf(cableSta),rfl,rfr);
         }
-
-        Cable cb =new Cable(Integer.valueOf(cableSta),rfl,rfr);
         return cb;
     }
 }
