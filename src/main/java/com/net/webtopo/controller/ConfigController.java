@@ -49,6 +49,8 @@ public class ConfigController {
         else if(s.equals("lo2")) return "loopback2";
         else if(s.equals("s0")) return "s0/0/0";
         else if(s.equals("s1")) return "s0/0/1";
+        else if(s.equals("f0")) return "f0/0";
+        else if(s.equals("f1")) return "f0/1";
         else if(s.equals("s0/0/0")) return "s0";
         else if(s.equals("s0/0/1")) return "s1";
         else return s;
@@ -91,8 +93,6 @@ public class ConfigController {
 
         String rs = "";
         rs = rs + RouterConnect.instance.sendCommand("configure terminal");
-        System.out.println(interact.get("interface"));
-        System.out.println(233);
         rs = rs + RouterConnect.instance.sendCommand(String.format("interface %s", portConvert(interact.get("interface"))));
         rs = rs + RouterConnect.instance.sendCommand(String.format("ip address %s %s", interact.get("ip"), interact.get("mask")));
         rs = rs + RouterConnect.instance.sendCommand("no shutdown");
@@ -154,7 +154,6 @@ public class ConfigController {
 
     @PutMapping("command")
     public ResultWrapper interactCommand(@RequestBody Map<String,String> interact){
-        System.out.println(233);
         String rs = RouterConnect.instance.sendCommand(interact.get("command"));
         System.out.println(rs);
         return new ResultWrapper(rs);
