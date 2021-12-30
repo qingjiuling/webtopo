@@ -36,7 +36,7 @@ public class ReadInfo {
         //System.out.println(result);
         JSONObject jsonObj;
         jsonObj = JSONObject.fromObject(object);
-        String[] inf ={"s0","s1","g0","g1","lo0","lo1","lo2","lo3","lo4","lo5"};
+        String[] inf ={"s0","s1","f0","f1","lo0","lo1","lo2","lo3","lo4","lo5"};
         List<RouterIntf> list = new ArrayList<>();
         for(int i=0;i<10;i++) {
             String ip;

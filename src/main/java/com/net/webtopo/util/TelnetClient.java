@@ -132,6 +132,7 @@ public class TelnetClient {
         try {
             if(telnet!=null&&!telnet.isConnected())
                 telnet.disconnect();
+//            Thread.sleep(1000);
         } catch (IOException e) {
             e.printStackTrace();
         }

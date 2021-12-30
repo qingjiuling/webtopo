@@ -1,62 +1,79 @@
 {
-	"case1": {
-		"router_id": "router_01",
-		"input": "ping 192.168.1.2"
-	},
-	"case2": {
-		"router_id": "router_01",
-		"input": "ping 20.20.20.2"
-	},
-	"case3": {
-		"router_id": "router_01",
-		"input": "ping 20.20.21.2"
-	},
-	"case4": {
-		"router_id": "router_01",
-		"input": "show ip route"
-	},
-	"case5": {
-		"router_id": "router_02",
-		"input": "ping 192.168.1.1"
-	},
-	"case6": {
-		"router_id": "router_02",
-		"input": "ping 10.10.10.1"
-	},
-	"case7": {
-		"router_id": "router_02",
-		"input": "ping 10.10.11.1"
-	},
-	"case8": {
-		"router_id": "router_02",
-		"input": "ping 172.16.1.3"
-	},
-	"case9": {
-		"router_id": "router_02",
-		"input": "ping 31.30.30.3"
-	},
-	"case10": {
-		"router_id": "router_02",
-		"input": "ping 32.30.30.3"
-	},
-	"case11": {
-		"router_id": "router_02",
-		"input": "show ip route"
-	},
-	"case12": {
-		"router_id": "router_03",
-		"input": "ping 172.16.1.2"
-	},
-	"case13": {
-		"router_id": "router_03",
-		"input": "ping 21.20.20.2"
-	},
-	"case14": {
-		"router_id": "router_03",
-		"input": "ping 22.20.20.2"
-	},
-	"case15": {
-		"router_id": "router_03",
-		"input": "show ip route"
-	}
+  "data": [
+    {
+      "case": 1,
+      "router_id": "router_01",
+      "input": "ping 192.168.1.2"
+    },
+    {
+      "case": 2,
+      "router_id": "router_01",
+      "input": "ping 20.20.20.2"
+    },
+    {
+      "case": 3,
+      "router_id": "router_01",
+      "input": "ping 20.20.21.2"
+    },
+    {
+      "case": 4,
+      "router_id": "router_01",
+      "input": "show ip route"
+    },
+    {
+      "case": 5,
+      "router_id": "router_02",
+      "input": "ping 192.168.1.1"
+    },
+    {
+      "case": 6,
+      "router_id": "router_02",
+      "input": "ping 10.10.10.1"
+    },
+    {
+      "case": 7,
+      "router_id": "router_02",
+      "input": "ping 10.10.11.1"
+    },
+    {
+      "case": 8,
+      "router_id": "router_02",
+      "input": "ping 172.16.1.3"
+    },
+    {
+      "case": 9,
+      "router_id": "router_02",
+      "input": "ping 31.30.30.3"
+    },
+    {
+      "case": 10,
+      "router_id": "router_02",
+      "input": "ping 32.30.30.3"
+    },
+    {
+      "case": 11,
+      "router_id": "router_02",
+      "input": "show ip route"
+    },
+    {
+      "case": 12,
+      "router_id": "router_03",
+      "input": "ping 172.16.1.2"
+    },
+    {
+      "case": 13,
+      "router_id": "router_03",
+      "input": "ping 21.20.20.2"
+    },
+    {
+      "case": 14,
+      "router_id": "router_03",
+      "input": "ping 22.20.20.2"
+    },
+    {
+      "case": 15,
+      "router_id": "router_03",
+      "input": "show ip route"
+    }
+  ]
 }

@@ -4,9 +4,11 @@ import com.net.webtopo.pojo.TestResult;
 import com.net.webtopo.util.JsonUtils;
 import com.net.webtopo.util.ResultWrapper;
 import com.net.webtopo.util.RouterConnect;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -17,6 +19,8 @@ import java.util.Objects;
 @RequestMapping("/check")
 public class TopoVerifyController {
 
+    @Resource
+    ConnectionController connectionController;
     /**
      * ping
      * @return
@@ -48,19 +52,33 @@ public class TopoVerifyController {
             String content = JsonUtils.readJsonFile("src/main/resources/file/test.json");
             JSONObject jsonObject = JSONObject.fromObject(content);
 
-            ConnectionController connectionController = new ConnectionController();
-            for (Object key:jsonObject.keySet()
-            ) {
-                JSONObject myCase = (JSONObject) jsonObject.get(key);
+//            ConnectionController connectionController = new ConnectionController();
+            JSONArray cases = jsonObject.getJSONArray("data");
+            String temp = null;
+            for (Object value : cases) {
+//                JSONObject myCase = (JSONObject) jsonObject.get(key);
+                JSONObject myCase = (JSONObject) value;
                 String routerId = myCase.getString("router_id");
                 String cmd = myCase.getString("input");
-                connectionController.establishConnection(routerId);
+                if(temp == null || !temp.equals(routerId)){
+                    try {
+                        //添加一个关闭连接
+                        System.out.println("Reconnect router.");
+                        temp = routerId;
+                        connectionController.distinctConnection();
+                        connectionController.establishConnection(routerId);
+                    } catch (Exception e) {
+                        System.out.println(routerId);
+                    }
+                }
+                RouterConnect.instance.sendCommand("terminal length 0"); // 发送给路由器
                 String rs = RouterConnect.instance.sendCommand(cmd); // 发送给路由器
                 System.out.println(rs);
                 TestResult ts = new TestResult(cmd,rs); // 把每一行指令的结果存入队列
                 resultList.add(ts);
                 //添加一个关闭连接
                 connectionController.distinctConnection();
+
 //                try {
 //                    rs = new String(rs.getBytes("ISO-8859-1"),"GBK");
 //
