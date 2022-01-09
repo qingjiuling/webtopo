@@ -74,7 +74,7 @@ public class TopoVerifyController {
                 RouterConnect.instance.sendCommand("terminal length 0"); // 发送给路由器
                 String rs = RouterConnect.instance.sendCommand(cmd); // 发送给路由器
                 System.out.println(rs);
-                TestResult ts = new TestResult(cmd,rs); // 把每一行指令的结果存入队列
+                TestResult ts = new TestResult(Integer.parseInt(myCase.getString("case")), cmd,rs); // 把每一行指令的结果存入队列
                 resultList.add(ts);
                 //添加一个关闭连接
                 connectionController.distinctConnection();

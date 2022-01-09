@@ -18,6 +18,7 @@ public class ConnectionController {
         if(id.equals("router_02")) ip = "111.111.111.2";
         if(id.equals("router_03")) ip = "111.111.111.3";
         RouterConnect.instance.login(ip, 23, "CISCO");
+        RouterConnect.instance.sendCommand("terminal length 0");
         return new ResultWrapper("test");
     }
 

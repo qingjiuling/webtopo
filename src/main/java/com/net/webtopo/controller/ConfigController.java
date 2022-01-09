@@ -154,9 +154,13 @@ public class ConfigController {
 
     @PutMapping("command")
     public ResultWrapper interactCommand(@RequestBody Map<String,String> interact){
-        String rs = RouterConnect.instance.sendCommand(interact.get("command"));
+        String[] cmds = interact.get("command").trim().split("\n");
+        StringBuilder rs = new StringBuilder();
+        for (String cmd : cmds) {
+            rs.append(RouterConnect.instance.sendCommand(cmd.trim())).append("\n");
+        }
         System.out.println(rs);
-        return new ResultWrapper(rs);
+        return new ResultWrapper(rs.toString());
     }
 
 }

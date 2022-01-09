@@ -8,6 +8,7 @@ import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.io.*;
 import java.net.Proxy;
 import java.nio.charset.StandardCharsets;
@@ -69,6 +70,7 @@ public class ConfigFileController {
         array.add(jsonObject);
         String res = array.toString();
         res = res.substring(1,res.length()-1);
+        System.out.println(res);
         return new ResultWrapper(res);
     }
 
