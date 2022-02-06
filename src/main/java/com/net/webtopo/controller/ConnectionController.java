@@ -22,7 +22,7 @@ public class ConnectionController {
         return new ResultWrapper("test");
     }
 
-    @GetMapping("distinct")
+    @GetMapping("/distinct")
     public ResultWrapper distinctConnection(){
         RouterConnect.instance.distinct();
         return new ResultWrapper("test2");
